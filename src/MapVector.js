@@ -25,7 +25,7 @@ class MapVector extends PureComponent {
   render() {
     const options = {
     	type: 'protobuf',
-      url: './tiles/{z}/{x}/{y}.pbf',
+      url: 'http://localhost:8000/public/tiles/{z}/{x}/{y}.pbf',
       subdomains: 'abcdefg',
       vectorTileLayerStyles: VectorTileStyling
     };
