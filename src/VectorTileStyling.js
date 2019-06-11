@@ -60,11 +60,11 @@ const VectorTileStyling = {
 		opacity: 0.4
 	},
 	road: {	// mapbox & nextzen only
-		weight: 1,
+		weight: 2,
 		fillColor: '#f2b648',
 		color: '#f2b648',
-		fillOpacity: 0.2,
-		opacity: 0.4
+		fillOpacity: 1,
+		opacity: 1
 	},
 	tunnel: {	// mapbox only
 		weight: 0.5,
@@ -149,6 +149,38 @@ const VectorTileStyling = {
 		fillOpacity: 0.2,
 		opacity: 0.4
 	},
+  pays: {
+		fill: true,
+		weight: 1,
+		fillColor: '#53e033',
+		color: '#53e033',
+		fillOpacity: 0.2,
+		opacity: 0.4,
+	},
+  regions: {
+		fill: true,
+		weight: 1,
+		fillColor: '#000000',
+		color: '#000000',
+		fillOpacity: 0.2,
+		opacity: 0.4,
+	},
+  provinces: {
+		fill: true,
+		weight: 1,
+		fillColor: '#ff0000',
+		color: '#ff0000',
+		fillOpacity: 0.2,
+		opacity: 0.4,
+	},
+  departements: {
+		fill: true,
+		weight: 1,
+		fillColor: '#00ff00',
+		color: '#00ff00',
+		fillOpacity: 0.2,
+		opacity: 0.4,
+	},
 	// Do not symbolize some stuff for mapbox
 	country_label: [],
 	marine_label: [],
@@ -168,5 +200,13 @@ const VectorTileStyling = {
 	road_name: [],
 	housenum_name: [],
 }
+
+VectorTileStyling.buildings  = VectorTileStyling.building;
+VectorTileStyling.boundaries = VectorTileStyling.boundary;
+VectorTileStyling.places     = VectorTileStyling.place;
+VectorTileStyling.pois       = VectorTileStyling.poi;
+VectorTileStyling.roads      = VectorTileStyling.road;
+VectorTileStyling.routes_nationales = VectorTileStyling.road;
+
 
 export default VectorTileStyling

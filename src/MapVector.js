@@ -23,6 +23,11 @@ const bounds = [
 class MapVector extends PureComponent {
   _map = createRef();
 
+  handleClick = (e) => {
+    console.log('click')
+    console.log(e)
+  }
+
   render() {
     const basemapOptions = {
       type: 'protobuf',
@@ -41,7 +46,7 @@ class MapVector extends PureComponent {
 
     const regionsOptions = {
     	type: 'protobuf',
-      url: 'http://localhost:8000/public/regions/country/{z}/{x}/{y}.pbf',
+      url: 'http://localhost:8000/public/tiles/regions/{z}/{x}/{y}.pbf',
       subdomains: 'regions',
       vectorTileLayerStyles: VectorTileStyling
     };
@@ -85,10 +90,10 @@ class MapVector extends PureComponent {
         */}
 
         <Pane name="country" style={{ zIndex: 10 }}>
-          <VectorGrid {...countryOptions} />
-          <VectorGrid {...regionsOptions} />
-          <VectorGrid {...provincesOptions} />
-          <VectorGrid {...departementsOptions} />
+          <VectorGrid {...countryOptions} onClick={this.handleClick} />
+          <VectorGrid {...regionsOptions} onClick={this.handleClick} />
+          <VectorGrid {...provincesOptions} onClick={this.handleClick} />
+          <VectorGrid {...departementsOptions} onClick={this.handleClick} />
         </Pane>
 
         <Pane name="roads" style={{ zIndex: 20 }}>
