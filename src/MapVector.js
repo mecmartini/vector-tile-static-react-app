@@ -34,7 +34,7 @@ class MapVector extends PureComponent {
 
     const options = {
     	type: 'protobuf',
-      url: 'http://localhost:8000/public/tiles/{z}/{x}/{y}.pbf',
+      url: 'http://localhost:8000/public/tiles/roads/{z}/{x}/{y}.pbf',
       subdomains: 'abcdefg',
       vectorTileLayerStyles: VectorTileStyling
     };
@@ -50,9 +50,11 @@ class MapVector extends PureComponent {
         </Pane>
         */}
 
+        {/*
         <Pane name="national-roads" style={{ zIndex: 10 }}>
           <VectorGrid {...basemapOptions} />
         </Pane>
+        */}
 
         <Pane name="national-roads" style={{ zIndex: 20 }}>
           <VectorGrid {...options} />
