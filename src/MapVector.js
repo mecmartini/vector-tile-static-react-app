@@ -25,7 +25,7 @@ class MapVector extends PureComponent {
 
   handleClick = (e) => {
     console.log('click')
-    console.log(e)
+    //console.log(e.target)
   }
 
   render() {
