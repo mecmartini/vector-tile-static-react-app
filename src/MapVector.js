@@ -1,6 +1,7 @@
 import React, { createRef, PureComponent } from 'react'
 import { Map, TileLayer, Pane, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
+import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
 
 import 'leaflet/dist/leaflet.css'
@@ -23,6 +24,14 @@ class MapVector extends PureComponent {
   _map = createRef();
 
   render() {
+    const basemapOptions = {
+      type: 'protobuf',
+      url: 'https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key={key}',
+      subdomains: 'hilmnopq',
+      accessKey: 'HEHrAR0e6Zq0aFnl3aun',
+      vectorTileLayerStyles: BasemapVectorStyle
+    }
+
     const options = {
     	type: 'protobuf',
       url: 'http://localhost:8000/public/tiles/{z}/{x}/{y}.pbf',
@@ -32,14 +41,20 @@ class MapVector extends PureComponent {
 
     return(
       <Map className="my-map" ref={this._map} bounds={bounds} zoom={5}>
+        {/*
         <Pane name="base" style={{ zIndex: 0 }}>
           <TileLayer
             attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
         </Pane>
+        */}
 
         <Pane name="national-roads" style={{ zIndex: 10 }}>
+          <VectorGrid {...basemapOptions} />
+        </Pane>
+
+        <Pane name="national-roads" style={{ zIndex: 20 }}>
           <VectorGrid {...options} />
         </Pane>
       </Map>
