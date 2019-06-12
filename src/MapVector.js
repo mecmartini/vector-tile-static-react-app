@@ -33,10 +33,6 @@ class MapVector extends PureComponent {
     }
   }
 
-  handleClick = (e) => {
-    console.log(e.layer.properties)
-  }
-
   handleRegionClick = (e) => {
     this.setState({
       regionFilter: e.layer.properties.region,
@@ -161,7 +157,8 @@ class MapVector extends PureComponent {
       vectorTileLayerStyles: VectorTileStyling
     };
 
-    console.log(regionFilter)
+    const provinceKey = 'province_' + regionFilter + provinceFilter + departmentFilter;
+    const departmentkey = 'department_' + regionFilter + provinceFilter + departmentFilter;
 
     return(
       <Map className="my-map" ref={this._map} bounds={bounds} zoom={5}>
@@ -181,15 +178,15 @@ class MapVector extends PureComponent {
         */}
 
         <Pane name="country" style={{ zIndex: 10 }}>
-          <VectorGrid {...countryOptions} onClick={this.handleClick} />
+          <VectorGrid {...countryOptions} />
           <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} />
 
           { regionFilter &&
-            <VectorGrid key={provinceFilter ? provinceFilter : 'province'} {...provincesOptions} onClick={this.handleProvinceClick} />
+            <VectorGrid key={provinceKey} {...provincesOptions} onClick={this.handleProvinceClick} />
           }
 
           { provinceFilter &&
-            <VectorGrid key={departmentFilter ? departmentFilter : 'departments'} {...departementsOptions} onClick={this.handleDepartmentClick} />
+            <VectorGrid key={departmentkey} {...departementsOptions} onClick={this.handleDepartmentClick} />
           }
         </Pane>
 
