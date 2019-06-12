@@ -38,11 +38,18 @@ class MapVector extends PureComponent {
   }
 
   handleRegionClick = (e) => {
-    this.setState({ regionFilter: e.layer.properties.region })
+    this.setState({
+      regionFilter: e.layer.properties.region,
+      provinceFilter: null,
+      departmentFilter: null
+    })
   }
 
   handleProvinceClick = (e) => {
-    this.setState({ provinceFilter: e.layer.properties.province })
+    this.setState({
+      provinceFilter: e.layer.properties.province,
+      departmentFilter: null,
+    })
   }
 
   handleDepartmentClick = (e) => {
@@ -153,6 +160,8 @@ class MapVector extends PureComponent {
       subdomains: 'roads',
       vectorTileLayerStyles: VectorTileStyling
     };
+
+    console.log(regionFilter)
 
     return(
       <Map className="my-map" ref={this._map} bounds={bounds} zoom={5}>
