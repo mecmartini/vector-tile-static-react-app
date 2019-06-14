@@ -3,13 +3,15 @@ import { Map, TileLayer, Pane, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
 import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
+import Control from '@skyeer/react-leaflet-custom-control'
+import styled from "styled-components";
 
 import 'leaflet/dist/leaflet.css'
 
 // wrap the VectorGrid component using `withLeaflet` HOC
 const VectorGrid = withLeaflet(VectorGridDefault);
 
-const bounds = [
+const initBounds = [
   [
     9.40110000000073,
     -5.51889999982625
@@ -20,6 +22,31 @@ const bounds = [
   ]
 ];
 
+const MapReset = styled.button`
+  background: white;
+  padding: 10px 20px;
+  border-radius: 2px;
+  border-color: rgba(0,0,0,0.2);
+  text-transform: uppercase;
+  box-shadow: 0 0;
+  font-size: 1em;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+`;
+
+const MapData = styled.section`
+  background: white;
+  padding: 10px 20px;
+  border-radius: 2px;
+  border-color: rgba(0,0,0,0.2);
+  box-shadow: 0 0;
+  font-size: 1em;
+  letter-spacing: 1.5px;
+  p {
+    text-transform: uppercase;
+  }
+`;
+
 class MapVector extends PureComponent {
   _map = createRef();
 
@@ -27,6 +54,9 @@ class MapVector extends PureComponent {
     super(props);
 
     this.state = {
+      bounds: initBounds,
+      zoom: 7,
+      center: null,
       regionFilter: null,
       provinceFilter: null,
       departmentFilter: null,
@@ -35,6 +65,8 @@ class MapVector extends PureComponent {
 
   handleRegionClick = (e) => {
     this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 8,
       regionFilter: e.layer.properties.region,
       provinceFilter: null,
       departmentFilter: null
@@ -43,17 +75,34 @@ class MapVector extends PureComponent {
 
   handleProvinceClick = (e) => {
     this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 9,
       provinceFilter: e.layer.properties.province,
       departmentFilter: null,
     })
   }
 
   handleDepartmentClick = (e) => {
-    this.setState({ departmentFilter: e.layer.properties.departement })
+    this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 10,
+      departmentFilter: e.layer.properties.departement
+    })
+  }
+
+  mapReset = (e) => {
+    this.setState({
+      bounds: initBounds,
+      zoom: 7,
+      center: null,
+      regionFilter: null,
+      provinceFilter: null,
+      departmentFilter: null
+    })
   }
 
   render() {
-    const { regionFilter, provinceFilter, departmentFilter } = this.state;
+    const { bounds, center, zoom, regionFilter, provinceFilter, departmentFilter } = this.state;
 
     const basemapOptions = {
       type: 'protobuf',
@@ -122,14 +171,15 @@ class MapVector extends PureComponent {
     const departementStyle = {
       departements: (properties, zoom) => {
         const province = properties.province;
+        const department = properties.departement;
         if (province === provinceFilter) {
           return {
             fill: true,
-        		weight: 1.5,
+        		weight: department === departmentFilter ? 3 : 1.5,
         		fillColor: '#00ff00',
         		color: '#00ff00',
-        		fillOpacity: 0.2,
-        		opacity: 0.4
+        		fillOpacity: department === departmentFilter ? 0.5 : 0.2,
+        		opacity: department === departmentFilter ? 0.7 :0.4
           }
         }
 
@@ -161,7 +211,15 @@ class MapVector extends PureComponent {
     const departmentkey = 'department_' + regionFilter + provinceFilter + departmentFilter;
 
     return(
-      <Map className="my-map" ref={this._map} bounds={bounds} zoom={5}>
+      <Map
+        className="my-map"
+        ref={this._map}
+        bounds={bounds}
+        center={center}
+        zoom={zoom}
+        minZoom={5}
+        maxZoom={14}
+      >
         {/*
         <Pane name="base" style={{ zIndex: 0 }}>
           <TileLayer
@@ -193,6 +251,28 @@ class MapVector extends PureComponent {
         <Pane name="roads" style={{ zIndex: 20 }}>
           {/* <VectorGrid {...options} /> */}
         </Pane>
+
+        <Control position="topright" className="mapReset">
+          <MapReset onClick={this.mapReset} >Reset</MapReset>
+        </Control>
+
+        { regionFilter &&
+          <Control position="topright" className="mapData">
+            <MapData>
+              { departmentFilter &&
+                <p><strong>Department:</strong> {departmentFilter}</p>
+              }
+
+              { provinceFilter &&
+                <p><strong>Province:</strong> {provinceFilter}</p>
+              }
+
+              { regionFilter &&
+                <p><strong>Region:</strong> {regionFilter}</p>
+              }
+            </MapData>
+          </Control>
+        }
       </Map>
     )
   }
