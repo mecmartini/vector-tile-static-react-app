@@ -1,5 +1,5 @@
 import React, { createRef, PureComponent } from 'react'
-import { Map, LayersControl, TileLayer, Pane, withLeaflet } from 'react-leaflet'
+import { Map, LayersControl, TileLayer, Pane, Popup, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
 import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
@@ -217,6 +217,7 @@ class MapVector extends PureComponent {
         className="my-map"
         ref={this._map}
         bounds={bounds}
+        maxBounds={initBounds}
         center={center}
         zoom={zoom}
         minZoom={5}
@@ -237,7 +238,11 @@ class MapVector extends PureComponent {
           }
 
           { provinceFilter &&
-            <VectorGrid key={departmentkey} {...departementsOptions} onClick={this.handleDepartmentClick} />
+            <VectorGrid key={departmentkey} {...departementsOptions} onClick={this.handleDepartmentClick}>
+              { departmentFilter &&
+                <Popup position={center}>{departmentFilter}</Popup>
+              }
+            </VectorGrid>
           }
         </Pane>
 
