@@ -1,5 +1,5 @@
 import React, { createRef, PureComponent } from 'react'
-import { Map, TileLayer, Pane, withLeaflet } from 'react-leaflet'
+import { Map, LayersControl, TileLayer, Pane, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
 import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
@@ -7,6 +7,8 @@ import Control from '@skyeer/react-leaflet-custom-control'
 import styled from "styled-components";
 
 import 'leaflet/dist/leaflet.css'
+
+const { BaseLayer, Overlay } = LayersControl
 
 // wrap the VectorGrid component using `withLeaflet` HOC
 const VectorGrid = withLeaflet(VectorGridDefault);
@@ -221,21 +223,12 @@ class MapVector extends PureComponent {
         maxZoom={14}
       >
         {/*
-        <Pane name="base" style={{ zIndex: 0 }}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-        </Pane>
-        */}
-
-        {/*
         <Pane name="national-roads" style={{ zIndex: 10 }}>
           <VectorGrid {...basemapOptions} />
         </Pane>
         */}
 
-        <Pane name="country" style={{ zIndex: 10 }}>
+        <Pane name="burkina" style={{ zIndex: 10 }}>
           <VectorGrid {...countryOptions} />
           <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} />
 
@@ -251,6 +244,25 @@ class MapVector extends PureComponent {
         <Pane name="roads" style={{ zIndex: 20 }}>
           {/* <VectorGrid {...options} /> */}
         </Pane>
+
+        <LayersControl position="topleft">
+          <BaseLayer checked name="Mapnik">
+            <Pane name="mapnik" style={{ zIndex: 0 }}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+            </Pane>
+          </BaseLayer>
+          <BaseLayer name="Black&White">
+            <Pane name="blackandwhite" style={{ zIndex: 10 }}>
+              <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
+              />
+            </Pane>
+          </BaseLayer>
+        </LayersControl>
 
         <Control position="topright" className="mapReset">
           <MapReset onClick={this.mapReset} >Reset</MapReset>
