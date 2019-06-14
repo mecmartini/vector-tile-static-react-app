@@ -3,6 +3,8 @@ import { Map, TileLayer, Pane, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
 import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
+import Control from '@skyeer/react-leaflet-custom-control'
+import styled from "styled-components";
 
 import 'leaflet/dist/leaflet.css'
 
@@ -20,6 +22,19 @@ const initBounds = [
   ]
 ];
 
+const MapReset = styled.button`
+  background: white;
+  padding: 10px 20px;
+  border-radius: 2px;
+  border-color: rgba(0,0,0,0.2);
+  text-transform: uppercase;
+  box-shadow: 0 0;
+  font-size: 1em;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+`;
+
+
 class MapVector extends PureComponent {
   _map = createRef();
 
@@ -28,7 +43,7 @@ class MapVector extends PureComponent {
 
     this.state = {
       bounds: initBounds,
-      zoom: 5,
+      zoom: 7,
       center: null,
       regionFilter: null,
       provinceFilter: null,
@@ -60,6 +75,17 @@ class MapVector extends PureComponent {
       center: [ e.latlng.lat, e.latlng.lng ],
       zoom: 10,
       departmentFilter: e.layer.properties.departement
+    })
+  }
+
+  mapReset = (e) => {
+    this.setState({
+      bounds: initBounds,
+      zoom: 7,
+      center: null,
+      regionFilter: null,
+      provinceFilter: null,
+      departmentFilter: null
     })
   }
 
@@ -213,6 +239,10 @@ class MapVector extends PureComponent {
         <Pane name="roads" style={{ zIndex: 20 }}>
           {/* <VectorGrid {...options} /> */}
         </Pane>
+
+        <Control position="topright" className="mapReset">
+          <MapReset onClick={this.mapReset} >Reset</MapReset>
+        </Control>
       </Map>
     )
   }
