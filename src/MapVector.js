@@ -9,19 +9,6 @@ import 'leaflet/dist/leaflet.css'
 // wrap the VectorGrid component using `withLeaflet` HOC
 const VectorGrid = withLeaflet(VectorGridDefault);
 
-/*
-const initBounds = [
-  [
-    9.40110000000073,
-    -5.51889999982625
-  ],
-  [
-    15.0824999999973,
-    2.40529997196798
-  ]
-];
-*/
-
 const initBounds = [
   [
     9.40110000000073,
