@@ -34,6 +34,18 @@ const MapReset = styled.button`
   cursor: pointer;
 `;
 
+const MapData = styled.section`
+  background: white;
+  padding: 10px 20px;
+  border-radius: 2px;
+  border-color: rgba(0,0,0,0.2);
+  box-shadow: 0 0;
+  font-size: 1em;
+  letter-spacing: 1.5px;
+  p {
+    text-transform: uppercase;
+  }
+`;
 
 class MapVector extends PureComponent {
   _map = createRef();
@@ -243,6 +255,24 @@ class MapVector extends PureComponent {
         <Control position="topright" className="mapReset">
           <MapReset onClick={this.mapReset} >Reset</MapReset>
         </Control>
+
+        { regionFilter &&
+          <Control position="topright" className="mapData">
+            <MapData>
+              { departmentFilter &&
+                <p><strong>Department:</strong> {departmentFilter}</p>
+              }
+
+              { provinceFilter &&
+                <p><strong>Province:</strong> {provinceFilter}</p>
+              }
+
+              { regionFilter &&
+                <p><strong>Region:</strong> {regionFilter}</p>
+              }
+            </MapData>
+          </Control>
+        }
       </Map>
     )
   }
