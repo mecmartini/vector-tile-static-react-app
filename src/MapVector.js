@@ -9,7 +9,20 @@ import 'leaflet/dist/leaflet.css'
 // wrap the VectorGrid component using `withLeaflet` HOC
 const VectorGrid = withLeaflet(VectorGridDefault);
 
-const bounds = [
+/*
+const initBounds = [
+  [
+    9.40110000000073,
+    -5.51889999982625
+  ],
+  [
+    15.0824999999973,
+    2.40529997196798
+  ]
+];
+*/
+
+const initBounds = [
   [
     9.40110000000073,
     -5.51889999982625
@@ -27,6 +40,9 @@ class MapVector extends PureComponent {
     super(props);
 
     this.state = {
+      bounds: initBounds,
+      zoom: 5,
+      center: null,
       regionFilter: null,
       provinceFilter: null,
       departmentFilter: null,
@@ -35,6 +51,8 @@ class MapVector extends PureComponent {
 
   handleRegionClick = (e) => {
     this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 8,
       regionFilter: e.layer.properties.region,
       provinceFilter: null,
       departmentFilter: null
@@ -43,17 +61,23 @@ class MapVector extends PureComponent {
 
   handleProvinceClick = (e) => {
     this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 9,
       provinceFilter: e.layer.properties.province,
       departmentFilter: null,
     })
   }
 
   handleDepartmentClick = (e) => {
-    this.setState({ departmentFilter: e.layer.properties.departement })
+    this.setState({
+      center: [ e.latlng.lat, e.latlng.lng ],
+      zoom: 10,
+      departmentFilter: e.layer.properties.departement
+    })
   }
 
   render() {
-    const { regionFilter, provinceFilter, departmentFilter } = this.state;
+    const { bounds, center, zoom, regionFilter, provinceFilter, departmentFilter } = this.state;
 
     const basemapOptions = {
       type: 'protobuf',
@@ -122,14 +146,15 @@ class MapVector extends PureComponent {
     const departementStyle = {
       departements: (properties, zoom) => {
         const province = properties.province;
+        const department = properties.departement;
         if (province === provinceFilter) {
           return {
             fill: true,
-        		weight: 1.5,
+        		weight: department === departmentFilter ? 3 : 1.5,
         		fillColor: '#00ff00',
         		color: '#00ff00',
-        		fillOpacity: 0.2,
-        		opacity: 0.4
+        		fillOpacity: department === departmentFilter ? 0.5 : 0.2,
+        		opacity: department === departmentFilter ? 0.7 :0.4
           }
         }
 
@@ -161,7 +186,15 @@ class MapVector extends PureComponent {
     const departmentkey = 'department_' + regionFilter + provinceFilter + departmentFilter;
 
     return(
-      <Map className="my-map" ref={this._map} bounds={bounds} zoom={5}>
+      <Map
+        className="my-map"
+        ref={this._map}
+        bounds={bounds}
+        center={center}
+        zoom={zoom}
+        minZoom={5}
+        maxZoom={14}
+      >
         {/*
         <Pane name="base" style={{ zIndex: 0 }}>
           <TileLayer
