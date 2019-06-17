@@ -203,7 +203,7 @@ class MapVector extends PureComponent {
       vectorTileLayerStyles: departmentstyle
     };
 
-    const options = {
+    const roadsOptions = {
     	type: 'protobuf',
       url: 'http://localhost:8000/public/tiles/roads/{z}/{x}/{y}.pbf',
       subdomains: 'roads',
@@ -224,7 +224,11 @@ class MapVector extends PureComponent {
         minZoom={7}
         maxZoom={12}
       >
-        <Pane name="burkina" style={{ zIndex: 10 }}>
+        <Pane name="roads" style={{ zIndex: 10 }}>
+          <VectorGrid {...roadsOptions} />
+        </Pane>
+
+        <Pane name="burkina" style={{ zIndex: 20 }}>
           <VectorGrid {...countryOptions} />
           <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} onMouseover={this.handleMouseover} onMouseout={this.handleMouseout} />
 
@@ -241,10 +245,6 @@ class MapVector extends PureComponent {
           }
         </Pane>
 
-        <Pane name="roads" style={{ zIndex: 20 }}>
-          {/* <VectorGrid {...options} /> */}
-        </Pane>
-
         <LayersControl position="topleft">
           <BaseLayer checked name="Mapnik">
             <Pane name="mapnik" style={{ zIndex: 0 }}>
@@ -255,7 +255,7 @@ class MapVector extends PureComponent {
             </Pane>
           </BaseLayer>
           <BaseLayer name="Black&White">
-            <Pane name="blackandwhite" style={{ zIndex: 10 }}>
+            <Pane name="blackandwhite" style={{ zIndex: 0 }}>
               <TileLayer
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
