@@ -115,14 +115,6 @@ class MapVector extends PureComponent {
   render() {
     const { bounds, center, zoom, regionFilter, provinceFilter, departmentFilter } = this.state;
 
-    const basemapOptions = {
-      type: 'protobuf',
-      url: 'https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key={key}',
-      subdomains: 'hilmnopq',
-      accessKey: 'HEHrAR0e6Zq0aFnl3aun',
-      vectorTileLayerStyles: BasemapVectorStyle
-    }
-
     const countryOptions = {
     	type: 'protobuf',
       url: 'http://localhost:8000/public/tiles/country/{z}/{x}/{y}.pbf',
@@ -232,12 +224,6 @@ class MapVector extends PureComponent {
         minZoom={7}
         maxZoom={12}
       >
-        {/*
-        <Pane name="national-roads" style={{ zIndex: 10 }}>
-          <VectorGrid {...basemapOptions} />
-        </Pane>
-        */}
-
         <Pane name="burkina" style={{ zIndex: 10 }}>
           <VectorGrid {...countryOptions} />
           <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} onMouseover={this.handleMouseover} onMouseout={this.handleMouseout} />
