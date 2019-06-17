@@ -221,8 +221,8 @@ class MapVector extends PureComponent {
         maxBounds={initBounds}
         center={center}
         zoom={zoom}
-        minZoom={5}
-        maxZoom={14}
+        minZoom={7}
+        maxZoom={12}
       >
         {/*
         <Pane name="national-roads" style={{ zIndex: 10 }}>
