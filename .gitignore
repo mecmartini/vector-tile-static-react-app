@@ -23,4 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 
 # custom
-public/tiles/
+public/tiles/_raws/
+public/tiles/country/
+public/tiles/regions/
+public/tiles/provinces/
+public/tiles/departments/
+public/tiles/roads/
