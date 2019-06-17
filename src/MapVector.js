@@ -1,10 +1,10 @@
 import React, { createRef, PureComponent } from 'react'
-import { Map, TileLayer, Pane, withLeaflet } from 'react-leaflet'
+import { Map, Pane, Popup, withLeaflet } from 'react-leaflet'
 import VectorGridDefault from 'react-leaflet-vectorgrid'
-import BasemapVectorStyle from './BasemapVectorStyle'
 import VectorTileStyling from './VectorTileStyling'
 import Control from '@skyeer/react-leaflet-custom-control'
 import styled from "styled-components";
+import MapControl from './MapControl'
 
 import 'leaflet/dist/leaflet.css'
 
@@ -74,6 +74,7 @@ class MapVector extends PureComponent {
   }
 
   handleProvinceClick = (e) => {
+    console.log(e.layer.properties)
     this.setState({
       center: [ e.latlng.lat, e.latlng.lng ],
       zoom: 9,
@@ -90,6 +91,14 @@ class MapVector extends PureComponent {
     })
   }
 
+  handleMouseover = (e) => {
+    console.log('mouse over')
+  }
+
+  handleMouseout = (e) => {
+    console.log('mouse out')
+  }
+
   mapReset = (e) => {
     this.setState({
       bounds: initBounds,
@@ -103,14 +112,6 @@ class MapVector extends PureComponent {
 
   render() {
     const { bounds, center, zoom, regionFilter, provinceFilter, departmentFilter } = this.state;
-
-    const basemapOptions = {
-      type: 'protobuf',
-      url: 'https://api.maptiler.com/tiles/v3/{z}/{x}/{y}.pbf?key={key}',
-      subdomains: 'hilmnopq',
-      accessKey: 'HEHrAR0e6Zq0aFnl3aun',
-      vectorTileLayerStyles: BasemapVectorStyle
-    }
 
     const countryOptions = {
     	type: 'protobuf',
@@ -168,8 +169,8 @@ class MapVector extends PureComponent {
       vectorTileLayerStyles: provinceStyle
     };
 
-    const departementStyle = {
-      departements: (properties, zoom) => {
+    const departmentstyle = {
+      departments: (properties, zoom) => {
         const province = properties.province;
         const department = properties.departement;
         if (province === provinceFilter) {
@@ -193,14 +194,14 @@ class MapVector extends PureComponent {
       },
   	}
 
-    const departementsOptions = {
+    const departmentsOptions = {
     	type: 'protobuf',
-      url: 'http://localhost:8000/public/tiles/departements/{z}/{x}/{y}.pbf',
-      subdomains: departmentFilter ? departmentFilter : 'departements',
-      vectorTileLayerStyles: departementStyle
+      url: 'http://localhost:8000/public/tiles/departments/{z}/{x}/{y}.pbf',
+      subdomains: departmentFilter ? departmentFilter : 'departments',
+      vectorTileLayerStyles: departmentstyle
     };
 
-    const options = {
+    const roadsOptions = {
     	type: 'protobuf',
       url: 'http://localhost:8000/public/tiles/roads/{z}/{x}/{y}.pbf',
       subdomains: 'roads',
@@ -215,42 +216,34 @@ class MapVector extends PureComponent {
         className="my-map"
         ref={this._map}
         bounds={bounds}
+        maxBounds={initBounds}
         center={center}
         zoom={zoom}
-        minZoom={5}
-        maxZoom={14}
+        minZoom={7}
+        maxZoom={12}
       >
-        {/*
-        <Pane name="base" style={{ zIndex: 0 }}>
-          <TileLayer
-            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+        <Pane name="roads" style={{ zIndex: 10 }}>
+          <VectorGrid {...roadsOptions} />
         </Pane>
-        */}
 
-        {/*
-        <Pane name="national-roads" style={{ zIndex: 10 }}>
-          <VectorGrid {...basemapOptions} />
-        </Pane>
-        */}
-
-        <Pane name="country" style={{ zIndex: 10 }}>
+        <Pane name="burkina" style={{ zIndex: 20 }}>
           <VectorGrid {...countryOptions} />
-          <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} />
+          <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} onMouseover={this.handleMouseover} onMouseout={this.handleMouseout} />
 
           { regionFilter &&
             <VectorGrid key={provinceKey} {...provincesOptions} onClick={this.handleProvinceClick} />
           }
 
           { provinceFilter &&
-            <VectorGrid key={departmentkey} {...departementsOptions} onClick={this.handleDepartmentClick} />
+            <VectorGrid key={departmentkey} {...departmentsOptions} onClick={this.handleDepartmentClick}>
+              { departmentFilter &&
+                <Popup position={center}>{departmentFilter}</Popup>
+              }
+            </VectorGrid>
           }
         </Pane>
 
-        <Pane name="roads" style={{ zIndex: 20 }}>
-          {/* <VectorGrid {...options} /> */}
-        </Pane>
+        <MapControl />
 
         <Control position="topright" className="mapReset">
           <MapReset onClick={this.mapReset} >Reset</MapReset>
