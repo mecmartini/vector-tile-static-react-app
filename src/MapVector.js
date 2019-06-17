@@ -76,6 +76,7 @@ class MapVector extends PureComponent {
   }
 
   handleProvinceClick = (e) => {
+    console.log(e.layer.properties)
     this.setState({
       center: [ e.latlng.lat, e.latlng.lng ],
       zoom: 9,
@@ -170,8 +171,8 @@ class MapVector extends PureComponent {
       vectorTileLayerStyles: provinceStyle
     };
 
-    const departementStyle = {
-      departements: (properties, zoom) => {
+    const departmentstyle = {
+      departments: (properties, zoom) => {
         const province = properties.province;
         const department = properties.departement;
         if (province === provinceFilter) {
@@ -195,11 +196,11 @@ class MapVector extends PureComponent {
       },
   	}
 
-    const departementsOptions = {
+    const departmentsOptions = {
     	type: 'protobuf',
-      url: 'http://localhost:8000/public/tiles/departements/{z}/{x}/{y}.pbf',
-      subdomains: departmentFilter ? departmentFilter : 'departements',
-      vectorTileLayerStyles: departementStyle
+      url: 'http://localhost:8000/public/tiles/departments/{z}/{x}/{y}.pbf',
+      subdomains: departmentFilter ? departmentFilter : 'departments',
+      vectorTileLayerStyles: departmentstyle
     };
 
     const options = {
@@ -238,7 +239,7 @@ class MapVector extends PureComponent {
           }
 
           { provinceFilter &&
-            <VectorGrid key={departmentkey} {...departementsOptions} onClick={this.handleDepartmentClick}>
+            <VectorGrid key={departmentkey} {...departmentsOptions} onClick={this.handleDepartmentClick}>
               { departmentFilter &&
                 <Popup position={center}>{departmentFilter}</Popup>
               }
