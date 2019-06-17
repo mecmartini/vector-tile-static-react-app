@@ -42,4 +42,6 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 ### `npm run tile-server`
 
-Launch the internal `tile-server`. Your `tile-server` should be available at http://localhost:8000.
+Launch the internal `tile-server`.
+
+Your `tile-server` should be available at http://localhost:8000.
