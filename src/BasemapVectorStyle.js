@@ -171,6 +171,8 @@ const BasemapVectorStyle = {
 	poi_name: [],
 	road_name: [],
 	housenum_name: [],
+  mountain_peak: [],
+  aerodrome_label: [],
 };
 
 BasemapVectorStyle.buildings  = BasemapVectorStyle.building;
