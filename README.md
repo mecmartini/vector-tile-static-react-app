@@ -9,7 +9,7 @@ The tiles were generated with [tippecanoe](https://github.com/mapbox/tippecanoe)
 
 Unfortunately, I can't publish the used tiles.
 
-The tiles must be located under `public/tiles` folder. Before to start the application you must launch the internal [tile-server](#npm run tile-server)
+The tiles must be located under `public/tiles` folder. Before to start the application you must launch the internal [tile-server](#npm-run-tile-server)
 
 The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and make use of [react-leaflet](https://react-leaflet.js.org/) and [react-leaflet-vectorgrid](https://github.com/mhasbie/react-leaflet-vectorgrid).
 
