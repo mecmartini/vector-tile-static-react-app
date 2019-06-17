@@ -8,7 +8,7 @@ import styled from "styled-components";
 
 import 'leaflet/dist/leaflet.css'
 
-const { BaseLayer, Overlay } = LayersControl
+const { BaseLayer } = LayersControl
 
 // wrap the VectorGrid component using `withLeaflet` HOC
 const VectorGrid = withLeaflet(VectorGridDefault);
