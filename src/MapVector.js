@@ -93,6 +93,14 @@ class MapVector extends PureComponent {
     })
   }
 
+  handleMouseover = (e) => {
+    console.log('mouse over')
+  }
+
+  handleMouseout = (e) => {
+    console.log('mouse out')
+  }
+
   mapReset = (e) => {
     this.setState({
       bounds: initBounds,
@@ -232,7 +240,7 @@ class MapVector extends PureComponent {
 
         <Pane name="burkina" style={{ zIndex: 10 }}>
           <VectorGrid {...countryOptions} />
-          <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} />
+          <VectorGrid {...regionsOptions} onClick={this.handleRegionClick} onMouseover={this.handleMouseover} onMouseout={this.handleMouseout} />
 
           { regionFilter &&
             <VectorGrid key={provinceKey} {...provincesOptions} onClick={this.handleProvinceClick} />
